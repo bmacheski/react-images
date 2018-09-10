@@ -624,198 +624,222 @@ var defaultStyles$5 = {
 };
 
 var classes = StyleSheet$1.create({
-	paginatedThumbnails: {
-		bottom: theme.container.gutter.vertical,
-		height: theme.thumbnail.size,
-		padding: '0 50px',
-		position: 'absolute',
-		textAlign: 'center',
-		whiteSpace: 'nowrap',
-		left: '50%',
-		transform: 'translateX(-50%)'
-	}
+  paginatedThumbnails: {
+    bottom: theme.container.gutter.vertical,
+    height: theme.thumbnail.size,
+    padding: "0 50px",
+    position: "absolute",
+    textAlign: "center",
+    whiteSpace: "nowrap",
+    left: "50%",
+    transform: "translateX(-50%)"
+  }
 });
 
 var arrowStyles = {
-	height: theme.thumbnail.size + theme.thumbnail.gutter * 2,
-	width: 40
+  height: theme.thumbnail.size + theme.thumbnail.gutter * 2,
+  width: 40
 };
 
 var PaginatedThumbnails = function (_Component) {
-	inherits(PaginatedThumbnails, _Component);
+  inherits(PaginatedThumbnails, _Component);
 
-	function PaginatedThumbnails(props) {
-		classCallCheck(this, PaginatedThumbnails);
+  function PaginatedThumbnails(props) {
+    classCallCheck(this, PaginatedThumbnails);
 
-		var _this = possibleConstructorReturn(this, (PaginatedThumbnails.__proto__ || Object.getPrototypeOf(PaginatedThumbnails)).call(this, props));
+    var _this = possibleConstructorReturn(this, (PaginatedThumbnails.__proto__ || Object.getPrototypeOf(PaginatedThumbnails)).call(this, props));
 
-		_this.state = {
-			hasCustomPage: false
-		};
+    _this.state = {
+      hasCustomPage: false
+    };
 
-		_this.gotoPrev = _this.gotoPrev.bind(_this);
-		_this.gotoNext = _this.gotoNext.bind(_this);
-		return _this;
-	}
+    _this.gotoPrev = _this.gotoPrev.bind(_this);
+    _this.gotoNext = _this.gotoNext.bind(_this);
+    return _this;
+  }
 
-	createClass(PaginatedThumbnails, [{
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
-			// Component should be controlled, flush state when currentImage changes
-			if (nextProps.currentImage !== this.props.currentImage) {
-				this.setState({
-					hasCustomPage: false
-				});
-			}
-		}
+  createClass(PaginatedThumbnails, [{
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      // Component should be controlled, flush state when currentImage changes
+      if (nextProps.currentImage !== this.props.currentImage) {
+        this.setState({
+          hasCustomPage: false
+        });
+      }
+    }
 
-		// ==============================
-		// METHODS
-		// ==============================
+    // ==============================
+    // METHODS
+    // ==============================
 
-	}, {
-		key: 'getFirst',
-		value: function getFirst() {
-			var _props = this.props,
-			    currentImage = _props.currentImage,
-			    offset = _props.offset;
+  }, {
+    key: "getFirst",
+    value: function getFirst() {
+      var _props = this.props,
+          currentImage = _props.currentImage,
+          offset = _props.offset;
 
-			if (this.state.hasCustomPage) {
-				return this.clampFirst(this.state.first);
-			}
-			return this.clampFirst(currentImage - offset);
-		}
-	}, {
-		key: 'setFirst',
-		value: function setFirst(event, newFirst) {
-			var first = this.state.first;
-
-
-			if (event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
-
-			if (first === newFirst) return;
-
-			this.setState({
-				hasCustomPage: true,
-				first: newFirst
-			});
-		}
-	}, {
-		key: 'gotoPrev',
-		value: function gotoPrev(event) {
-			this.setFirst(event, this.getFirst() - this.props.offset);
-		}
-	}, {
-		key: 'gotoNext',
-		value: function gotoNext(event) {
-			this.setFirst(event, this.getFirst() + this.props.offset);
-		}
-	}, {
-		key: 'clampFirst',
-		value: function clampFirst(value) {
-			var _props2 = this.props,
-			    images = _props2.images,
-			    offset = _props2.offset;
+      if (this.state.hasCustomPage) {
+        return this.clampFirst(this.state.first);
+      }
+      return this.clampFirst(currentImage - offset);
+    }
+  }, {
+    key: "setFirst",
+    value: function setFirst(event, newFirst) {
+      var first = this.state.first;
 
 
-			var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
 
-			if (value < 0) {
-				return 0;
-			} else if (value + totalCount > images.length) {
-				// Too far
-				return images.length - totalCount;
-			} else {
-				return value;
-			}
-		}
+      if (first === newFirst) return;
 
-		// ==============================
-		// RENDERERS
-		// ==============================
-
-	}, {
-		key: 'renderArrowPrev',
-		value: function renderArrowPrev() {
-			if (this.getFirst() <= 0) return null;
-
-			return React.createElement(Arrow, {
-				direction: 'left',
-				size: 'small',
-				icon: 'arrowLeft',
-				onClick: this.gotoPrev,
-				style: arrowStyles,
-				title: 'Previous (Left arrow key)',
-				type: 'button'
-			});
-		}
-	}, {
-		key: 'renderArrowNext',
-		value: function renderArrowNext() {
-			var _props3 = this.props,
-			    offset = _props3.offset,
-			    images = _props3.images;
-
-			var totalCount = 2 * offset + 1;
-			if (this.getFirst() + totalCount >= images.length) return null;
-
-			return React.createElement(Arrow, {
-				direction: 'right',
-				size: 'small',
-				icon: 'arrowRight',
-				onClick: this.gotoNext,
-				style: arrowStyles,
-				title: 'Next (Right arrow key)',
-				type: 'button'
-			});
-		}
-	}, {
-		key: 'render',
-		value: function render$$1() {
-			var _props4 = this.props,
-			    images = _props4.images,
-			    currentImage = _props4.currentImage,
-			    onClickThumbnail = _props4.onClickThumbnail,
-			    offset = _props4.offset;
+      this.setState({
+        hasCustomPage: true,
+        first: newFirst
+      });
+    }
+  }, {
+    key: "gotoPrev",
+    value: function gotoPrev(event) {
+      this.setFirst(event, this.getFirst() - this.props.offset);
+    }
+  }, {
+    key: "gotoNext",
+    value: function gotoNext(event) {
+      this.setFirst(event, this.getFirst() + this.props.offset);
+    }
+  }, {
+    key: "clampFirst",
+    value: function clampFirst(value) {
+      var _props2 = this.props,
+          images = _props2.images,
+          offset = _props2.offset;
 
 
-			var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
-			var thumbnails = [];
-			var baseOffset = 0;
-			if (images.length <= totalCount) {
-				thumbnails = images;
-			} else {
-				// Try to center current image in list
-				baseOffset = this.getFirst();
-				thumbnails = images.slice(baseOffset, baseOffset + totalCount);
-			}
+      var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
 
-			return React.createElement(
-				'div',
-				{ className: css$1(classes.paginatedThumbnails) },
-				this.renderArrowPrev(),
-				thumbnails.map(function (img, idx) {
-					return React.createElement(Thumbnail, _extends({ key: baseOffset + idx
-					}, img, {
-						index: baseOffset + idx,
-						onClick: onClickThumbnail,
-						active: baseOffset + idx === currentImage }));
-				}),
-				this.renderArrowNext()
-			);
-		}
-	}]);
-	return PaginatedThumbnails;
+      if (value < 0) {
+        return 0;
+      } else if (value + totalCount > images.length) {
+        // Too far
+        return images.length - totalCount;
+      } else {
+        return value;
+      }
+    }
+
+    // ==============================
+    // RENDERERS
+    // ==============================
+
+  }, {
+    key: "renderArrowPrev",
+    value: function renderArrowPrev() {
+      if (this.getFirst() <= 0) return null;
+
+      return React.createElement(Arrow, {
+        direction: "left",
+        size: "small",
+        icon: "arrowLeft",
+        onClick: this.gotoPrev,
+        style: arrowStyles,
+        title: "Previous (Left arrow key)",
+        type: "button"
+      });
+    }
+  }, {
+    key: "renderArrowNext",
+    value: function renderArrowNext() {
+      var _props3 = this.props,
+          offset = _props3.offset,
+          images = _props3.images;
+
+      var totalCount = 2 * offset + 1;
+      if (this.getFirst() + totalCount >= images.length) return null;
+
+      return React.createElement(Arrow, {
+        direction: "right",
+        size: "small",
+        icon: "arrowRight",
+        onClick: this.gotoNext,
+        style: arrowStyles,
+        title: "Next (Right arrow key)",
+        type: "button"
+      });
+    }
+  }, {
+    key: "render",
+    value: function render$$1() {
+      var _props4 = this.props,
+          images = _props4.images,
+          currentImage = _props4.currentImage,
+          onClickThumbnail = _props4.onClickThumbnail,
+          offset = _props4.offset,
+          toggleEditTags = _props4.toggleEditTags,
+          editingTags = _props4.editingTags;
+
+
+      var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
+      var thumbnails = [];
+      var baseOffset = 0;
+      if (images.length <= totalCount) {
+        thumbnails = images;
+      } else {
+        // Try to center current image in list
+        baseOffset = this.getFirst();
+        thumbnails = images.slice(baseOffset, baseOffset + totalCount);
+      }
+
+      return React.createElement(
+        "div",
+        { className: css$1(classes.paginatedThumbnails) },
+        React.createElement(
+          "div",
+          { style: { color: "white", float: "left" }, onClick: toggleEditTags },
+          !editingTags && React.createElement(
+            React.Fragment,
+            null,
+            React.createElement(
+              "span",
+              { style: { cursor: "pointer" } },
+              "Explore Tags ",
+              React.createElement("i", { className: "fas fa-caret-right" })
+            )
+          )
+        ),
+        !editingTags && React.createElement(
+          React.Fragment,
+          null,
+          this.renderArrowPrev(),
+          thumbnails.map(function (img, idx) {
+            return React.createElement(Thumbnail, _extends({
+              key: baseOffset + idx
+            }, img, {
+              index: baseOffset + idx,
+              onClick: onClickThumbnail,
+              active: baseOffset + idx === currentImage
+            }));
+          }),
+          this.renderArrowNext()
+        )
+      );
+    }
+  }]);
+  return PaginatedThumbnails;
 }(Component);
 
 PaginatedThumbnails.propTypes = {
-	currentImage: PropTypes.number,
-	images: PropTypes.array,
-	offset: PropTypes.number,
-	onClickThumbnail: PropTypes.func.isRequired
+  currentImage: PropTypes.number,
+  images: PropTypes.array,
+  offset: PropTypes.number,
+  onClickThumbnail: PropTypes.func.isRequired,
+  toggleEditTags: PropTypes.func,
+  editingTags: PropTypes.bool
 };
 
 // Pass the Lightbox context through to the Portal's descendents
@@ -974,6 +998,59 @@ var styles = function styles(_ref) {
 	};
 };
 
+var defaultStyles$6 = {
+  tag: {
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    borderRadius: 2,
+    cursor: "pointer",
+    display: "inline-block",
+    height: theme.thumbnail.size,
+    margin: theme.thumbnail.gutter,
+    overflow: "hidden",
+    width: theme.thumbnail.size
+  }
+};
+
+function Tag(_ref, _ref2) {
+  var index = _ref.index,
+      src = _ref.src,
+      thumbnail = _ref.thumbnail,
+      active = _ref.active,
+      _onClick = _ref.onClick,
+      value = _ref.value,
+      selectedTags = _ref.selectedTags;
+  var theme$$1 = _ref2.theme;
+
+  var classes = StyleSheet$1.create(deepMerge(defaultStyles$6, theme$$1));
+  var selected = Array.isArray(selectedTags) ? selectedTags.indexOf(value) > -1 : false;
+  return React.createElement(
+    "span",
+    {
+      onClick: function onClick() {
+        return _onClick(value);
+      },
+      className: "label label-default " + (selected ? "active" : ""),
+      style: {
+        backgroundColor: "gray",
+        marginRight: "5px",
+        padding: "5px",
+        borderRadius: "10px",
+        cursor: "pointer"
+      }
+    },
+    value
+  );
+}
+
+Tag.propTypes = {
+  value: PropTypes.string
+};
+
+Tag.contextTypes = {
+  theme: PropTypes.object.isRequired
+};
+
 /**
 	Bind multiple component methods:
 
@@ -998,487 +1075,640 @@ function bindFunctions(functions) {
 
 var canUseDom = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
+var Tags = function (_Component) {
+  inherits(Tags, _Component);
+
+  function Tags() {
+    classCallCheck(this, Tags);
+    return possibleConstructorReturn(this, (Tags.__proto__ || Object.getPrototypeOf(Tags)).apply(this, arguments));
+  }
+
+  createClass(Tags, [{
+    key: "render",
+    value: function render$$1() {
+      var _props = this.props,
+          handleTagClick = _props.handleTagClick,
+          editingTags = _props.editingTags,
+          selectedTags = _props.selectedTags,
+          tags = _props.tags,
+          toggleEditTags = _props.toggleEditTags;
+
+
+      return React.createElement(
+        "div",
+        {
+          className: css$1(editingTags ? classes$1.editingTags : classes$1.paginatedThumbnails)
+        },
+        editingTags && React.createElement(
+          React.Fragment,
+          null,
+          React.createElement(
+            "div",
+            {
+              style: {
+                // margin: "0"
+                // top: "50%",
+                // transform: "translateY(-50)",
+                // position: "absolute",
+                // left: "-75px",
+                // height: "100%",
+                // paddingRight: "4px",
+                // color: "white",
+                // marginRight: "10px"
+              }
+            },
+            React.createElement(
+              "span",
+              { onClick: toggleEditTags, style: { cursor: "pointer" } },
+              "Dismiss ",
+              React.createElement("i", { className: "fas fa-times" })
+            )
+          ),
+          tags.map(function (x) {
+            return React.createElement(Tag, {
+              value: x,
+              selectedTags: selectedTags,
+              onClick: handleTagClick
+            });
+          })
+        )
+      );
+    }
+  }]);
+  return Tags;
+}(Component);
+
+var classes$1 = StyleSheet$1.create({
+  paginatedThumbnails: {
+    bottom: theme.container.gutter.vertical,
+    height: theme.thumbnail.size,
+    padding: "0 50px",
+    position: "absolute",
+    textAlign: "center",
+    whiteSpace: "nowrap",
+    left: "50%",
+    transform: "translateX(-50%)"
+  },
+  editingThumbnails: {
+    bottom: theme.container.gutter.vertical,
+    height: theme.thumbnail.size,
+    padding: "0 20px",
+    position: "absolute",
+    textAlign: "center",
+    whiteSpace: "nowrap",
+    left: "50%",
+    transform: "translateX(-50%)"
+  }
+});
+
 // consumers sometimes provide incorrect type or casing
 function normalizeSourceSet(data) {
-	var sourceSet = data.srcSet || data.srcset;
+  var sourceSet = data.srcSet || data.srcset;
 
-	if (Array.isArray(sourceSet)) {
-		return sourceSet.join();
-	}
+  if (Array.isArray(sourceSet)) {
+    return sourceSet.join();
+  }
 
-	return sourceSet;
+  return sourceSet;
 }
 
 var Lightbox = function (_Component) {
-	inherits(Lightbox, _Component);
+  inherits(Lightbox, _Component);
 
-	function Lightbox(props) {
-		classCallCheck(this, Lightbox);
+  function Lightbox(props) {
+    classCallCheck(this, Lightbox);
 
-		var _this = possibleConstructorReturn(this, (Lightbox.__proto__ || Object.getPrototypeOf(Lightbox)).call(this, props));
+    var _this = possibleConstructorReturn(this, (Lightbox.__proto__ || Object.getPrototypeOf(Lightbox)).call(this, props));
 
-		_this.theme = deepMerge(theme, props.theme);
-		_this.classes = StyleSheet.create(deepMerge(defaultStyles, _this.theme));
-		_this.state = { imageLoaded: false };
+    _this.theme = deepMerge(theme, props.theme);
+    _this.classes = StyleSheet.create(deepMerge(defaultStyles, _this.theme));
+    _this.state = { imageLoaded: false };
 
-		bindFunctions.call(_this, ['gotoNext', 'gotoPrev', 'closeBackdrop', 'handleKeyboardInput', 'handleImageLoaded']);
-		return _this;
-	}
+    bindFunctions.call(_this, ["gotoNext", "gotoPrev", "closeBackdrop", "handleKeyboardInput", "handleImageLoaded"]);
+    return _this;
+  }
 
-	createClass(Lightbox, [{
-		key: 'getChildContext',
-		value: function getChildContext() {
-			return {
-				theme: this.theme
-			};
-		}
-	}, {
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			if (this.props.isOpen) {
-				if (this.props.enableKeyboardInput) {
-					window.addEventListener('keydown', this.handleKeyboardInput);
-				}
-				if (typeof this.props.currentImage === 'number') {
-					this.preloadImage(this.props.currentImage, this.handleImageLoaded);
-				}
-			}
-		}
-	}, {
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
-			if (!canUseDom) return;
+  createClass(Lightbox, [{
+    key: "getChildContext",
+    value: function getChildContext() {
+      return {
+        theme: this.theme
+      };
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (this.props.isOpen) {
+        if (this.props.enableKeyboardInput) {
+          window.addEventListener("keydown", this.handleKeyboardInput);
+        }
+        if (typeof this.props.currentImage === "number") {
+          this.preloadImage(this.props.currentImage, this.handleImageLoaded);
+        }
+      }
+    }
+  }, {
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      if (!canUseDom) return;
 
-			// preload images
-			if (nextProps.preloadNextImage) {
-				var currentIndex = this.props.currentImage;
-				var nextIndex = nextProps.currentImage + 1;
-				var prevIndex = nextProps.currentImage - 1;
-				var preloadIndex = void 0;
+      // preload images
+      if (nextProps.preloadNextImage) {
+        var currentIndex = this.props.currentImage;
+        var nextIndex = nextProps.currentImage + 1;
+        var prevIndex = nextProps.currentImage - 1;
+        var preloadIndex = void 0;
 
-				if (currentIndex && nextProps.currentImage > currentIndex) {
-					preloadIndex = nextIndex;
-				} else if (currentIndex && nextProps.currentImage < currentIndex) {
-					preloadIndex = prevIndex;
-				}
+        if (currentIndex && nextProps.currentImage > currentIndex) {
+          preloadIndex = nextIndex;
+        } else if (currentIndex && nextProps.currentImage < currentIndex) {
+          preloadIndex = prevIndex;
+        }
 
-				// if we know the user's direction just get one image
-				// otherwise, to be safe, we need to grab one in each direction
-				if (preloadIndex) {
-					this.preloadImage(preloadIndex);
-				} else {
-					this.preloadImage(prevIndex);
-					this.preloadImage(nextIndex);
-				}
-			}
+        // if we know the user's direction just get one image
+        // otherwise, to be safe, we need to grab one in each direction
+        if (preloadIndex) {
+          this.preloadImage(preloadIndex);
+        } else {
+          this.preloadImage(prevIndex);
+          this.preloadImage(nextIndex);
+        }
+      }
 
-			// preload current image
-			if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
-				var img = this.preloadImageData(nextProps.images[nextProps.currentImage], this.handleImageLoaded);
-				if (img) this.setState({ imageLoaded: img.complete });
-			}
+      // preload current image
+      if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
+        var img = this.preloadImageData(nextProps.images[nextProps.currentImage], this.handleImageLoaded);
+        if (img) this.setState({ imageLoaded: img.complete });
+      }
 
-			// add/remove event listeners
-			if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
-				window.addEventListener('keydown', this.handleKeyboardInput);
-			}
-			if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
-				window.removeEventListener('keydown', this.handleKeyboardInput);
-			}
-		}
-	}, {
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			if (this.props.enableKeyboardInput) {
-				window.removeEventListener('keydown', this.handleKeyboardInput);
-			}
-		}
+      // add/remove event listeners
+      if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
+        window.addEventListener("keydown", this.handleKeyboardInput);
+      }
+      if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
+        window.removeEventListener("keydown", this.handleKeyboardInput);
+      }
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (this.props.enableKeyboardInput) {
+        window.removeEventListener("keydown", this.handleKeyboardInput);
+      }
+    }
 
-		// ==============================
-		// METHODS
-		// ==============================
+    // ==============================
+    // METHODS
+    // ==============================
 
-	}, {
-		key: 'preloadImage',
-		value: function preloadImage(idx, onload) {
-			return this.preloadImageData(this.props.images[idx], onload);
-		}
-	}, {
-		key: 'preloadImageData',
-		value: function preloadImageData(data, onload) {
-			if (!data) return;
-			var img = new Image();
-			var sourceSet = normalizeSourceSet(data);
+  }, {
+    key: "preloadImage",
+    value: function preloadImage(idx, onload) {
+      return this.preloadImageData(this.props.images[idx], onload);
+    }
+  }, {
+    key: "preloadImageData",
+    value: function preloadImageData(data, onload) {
+      if (!data) return;
+      var img = new Image();
+      var sourceSet = normalizeSourceSet(data);
 
-			// TODO: add error handling for missing images
-			img.onerror = onload;
-			img.onload = onload;
-			img.src = data.src;
+      // TODO: add error handling for missing images
+      img.onerror = onload;
+      img.onload = onload;
+      img.src = data.src;
 
-			if (sourceSet) img.srcset = sourceSet;
+      if (sourceSet) img.srcset = sourceSet;
 
-			return img;
-		}
-	}, {
-		key: 'gotoNext',
-		value: function gotoNext(event) {
-			var _props = this.props,
-			    currentImage = _props.currentImage,
-			    images = _props.images;
-			var imageLoaded = this.state.imageLoaded;
-
-
-			if (!imageLoaded || currentImage === images.length - 1) return;
-
-			if (event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
-
-			this.props.onClickNext();
-		}
-	}, {
-		key: 'gotoPrev',
-		value: function gotoPrev(event) {
-			var currentImage = this.props.currentImage;
-			var imageLoaded = this.state.imageLoaded;
+      return img;
+    }
+  }, {
+    key: "gotoNext",
+    value: function gotoNext(event) {
+      var _props = this.props,
+          currentImage = _props.currentImage,
+          images = _props.images;
+      var imageLoaded = this.state.imageLoaded;
 
 
-			if (!imageLoaded || currentImage === 0) return;
+      if (!imageLoaded || currentImage === images.length - 1) return;
 
-			if (event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
 
-			this.props.onClickPrev();
-		}
-	}, {
-		key: 'closeBackdrop',
-		value: function closeBackdrop(event) {
-			// make sure event only happens if they click the backdrop
-			// and if the caption is widening the figure element let that respond too
-			if (event.target.id === 'lightboxBackdrop' || event.target.tagName === 'FIGURE') {
-				this.props.onClose();
-			}
-		}
-	}, {
-		key: 'handleKeyboardInput',
-		value: function handleKeyboardInput(event) {
-			if (event.keyCode === 37) {
-				// left
-				this.gotoPrev(event);
-				return true;
-			} else if (event.keyCode === 39) {
-				// right
-				this.gotoNext(event);
-				return true;
-			} else if (event.keyCode === 27) {
-				// esc
-				this.props.onClose();
-				return true;
-			}
-			return false;
-		}
-	}, {
-		key: 'handleImageLoaded',
-		value: function handleImageLoaded() {
-			this.setState({ imageLoaded: true });
-		}
-
-		// ==============================
-		// RENDERERS
-		// ==============================
-
-	}, {
-		key: 'renderArrowPrev',
-		value: function renderArrowPrev() {
-			if (this.props.currentImage === 0) return null;
-
-			return React.createElement(Arrow, {
-				direction: 'left',
-				icon: 'arrowLeft',
-				onClick: this.gotoPrev,
-				title: this.props.leftArrowTitle,
-				type: 'button'
-			});
-		}
-	}, {
-		key: 'renderArrowNext',
-		value: function renderArrowNext() {
-			if (this.props.currentImage === this.props.images.length - 1) return null;
-
-			return React.createElement(Arrow, {
-				direction: 'right',
-				icon: 'arrowRight',
-				onClick: this.gotoNext,
-				title: this.props.rightArrowTitle,
-				type: 'button'
-			});
-		}
-	}, {
-		key: 'renderDialog',
-		value: function renderDialog() {
-			var _props2 = this.props,
-			    backdropClosesModal = _props2.backdropClosesModal,
-			    isOpen = _props2.isOpen,
-			    showThumbnails = _props2.showThumbnails,
-			    width = _props2.width;
-			var imageLoaded = this.state.imageLoaded;
+      this.props.onClickNext();
+    }
+  }, {
+    key: "gotoPrev",
+    value: function gotoPrev(event) {
+      var currentImage = this.props.currentImage;
+      var imageLoaded = this.state.imageLoaded;
 
 
-			if (!isOpen) return React.createElement('span', { key: 'closed' });
+      if (!imageLoaded || currentImage === 0) return;
 
-			var offsetThumbnails = 0;
-			if (showThumbnails) {
-				offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
-			}
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
 
-			return React.createElement(
-				Container,
-				{
-					key: 'open',
-					onClick: backdropClosesModal && this.closeBackdrop,
-					onTouchEnd: backdropClosesModal && this.closeBackdrop
-				},
-				React.createElement(
-					'div',
-					null,
-					React.createElement(
-						'div',
-						{ className: css(this.classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
-						imageLoaded && this.renderHeader(),
-						this.renderImages(),
-						this.renderSpinner(),
-						imageLoaded && this.renderFooter()
-					),
-					imageLoaded && this.renderThumbnails(),
-					imageLoaded && this.renderArrowPrev(),
-					imageLoaded && this.renderArrowNext(),
-					this.props.preventScroll && React.createElement(ScrollLock, null)
-				)
-			);
-		}
-	}, {
-		key: 'renderImages',
-		value: function renderImages() {
-			var _props3 = this.props,
-			    currentImage = _props3.currentImage,
-			    images = _props3.images,
-			    onClickImage = _props3.onClickImage,
-			    showThumbnails = _props3.showThumbnails;
-			var imageLoaded = this.state.imageLoaded;
+      this.props.onClickPrev();
+    }
+  }, {
+    key: "closeBackdrop",
+    value: function closeBackdrop(event) {
+      // make sure event only happens if they click the backdrop
+      // and if the caption is widening the figure element let that respond too
+      if (event.target.id === "lightboxBackdrop" || event.target.tagName === "FIGURE") {
+        this.props.onClose();
+      }
+    }
+  }, {
+    key: "handleKeyboardInput",
+    value: function handleKeyboardInput(event) {
+      if (event.keyCode === 37) {
+        // left
+        this.gotoPrev(event);
+        return true;
+      } else if (event.keyCode === 39) {
+        // right
+        this.gotoNext(event);
+        return true;
+      } else if (event.keyCode === 27) {
+        // esc
+        this.props.onClose();
+        return true;
+      }
+      return false;
+    }
+  }, {
+    key: "handleImageLoaded",
+    value: function handleImageLoaded() {
+      this.setState({ imageLoaded: true });
+    }
 
+    // ==============================
+    // RENDERERS
+    // ==============================
 
-			if (!images || !images.length) return null;
+  }, {
+    key: "renderArrowPrev",
+    value: function renderArrowPrev() {
+      if (this.props.currentImage === 0) return null;
 
-			var image = images[currentImage];
-			var sourceSet = normalizeSourceSet(image);
-			var sizes = sourceSet ? '100vw' : null;
+      return React.createElement(Arrow, {
+        direction: "left",
+        icon: "arrowLeft",
+        onClick: this.gotoPrev,
+        title: this.props.leftArrowTitle,
+        type: "button"
+      });
+    }
+  }, {
+    key: "renderArrowNext",
+    value: function renderArrowNext() {
+      if (this.props.currentImage === this.props.images.length - 1) return null;
 
-			var thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-			var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical + 'px';
+      return React.createElement(Arrow, {
+        direction: "right",
+        icon: "arrowRight",
+        onClick: this.gotoNext,
+        title: this.props.rightArrowTitle,
+        type: "button"
+      });
+    }
+  }, {
+    key: "renderCurrentImageTagSection",
+    value: function renderCurrentImageTagSection() {
+      var _props2 = this.props,
+          currentImageTags = _props2.currentImageTags;
 
-			return React.createElement(
-				'figure',
-				{ className: css(this.classes.figure) },
-				React.createElement('img', {
-					className: css(this.classes.image, imageLoaded && this.classes.imageLoaded),
-					onClick: onClickImage,
-					sizes: sizes,
-					alt: image.alt,
-					src: image.src,
-					srcSet: sourceSet,
-					style: {
-						cursor: onClickImage ? 'pointer' : 'auto',
-						maxHeight: 'calc(100vh - ' + heightOffset + ')'
-					}
-				})
-			);
-		}
-	}, {
-		key: 'renderThumbnails',
-		value: function renderThumbnails() {
-			var _props4 = this.props,
-			    images = _props4.images,
-			    currentImage = _props4.currentImage,
-			    onClickThumbnail = _props4.onClickThumbnail,
-			    showThumbnails = _props4.showThumbnails,
-			    thumbnailOffset = _props4.thumbnailOffset;
-
-
-			if (!showThumbnails) return;
-
-			return React.createElement(PaginatedThumbnails, {
-				currentImage: currentImage,
-				images: images,
-				offset: thumbnailOffset,
-				onClickThumbnail: onClickThumbnail
-			});
-		}
-	}, {
-		key: 'renderHeader',
-		value: function renderHeader() {
-			var _props5 = this.props,
-			    closeButtonTitle = _props5.closeButtonTitle,
-			    customControls = _props5.customControls,
-			    onClose = _props5.onClose,
-			    showCloseButton = _props5.showCloseButton;
-
-
-			return React.createElement(Header, {
-				customControls: customControls,
-				onClose: onClose,
-				showCloseButton: showCloseButton,
-				closeButtonTitle: closeButtonTitle
-			});
-		}
-	}, {
-		key: 'renderFooter',
-		value: function renderFooter() {
-			var _props6 = this.props,
-			    currentImage = _props6.currentImage,
-			    images = _props6.images,
-			    imageCountSeparator = _props6.imageCountSeparator,
-			    showImageCount = _props6.showImageCount;
+      return React.createElement(
+        "div",
+        { style: { position: "absolute", right: "250px", top: "150px" } },
+        React.createElement(
+          "div",
+          null,
+          React.createElement(
+            "span",
+            null,
+            "Tags: "
+          )
+        ),
+        currentImageTags.map(function (x) {
+          return React.createElement(
+            React.Fragment,
+            null,
+            React.createElement(Tag, { value: x }),
+            React.createElement("br", null)
+          );
+        })
+      );
+    }
+  }, {
+    key: "renderDialog",
+    value: function renderDialog() {
+      var _props3 = this.props,
+          backdropClosesModal = _props3.backdropClosesModal,
+          isOpen = _props3.isOpen,
+          showThumbnails = _props3.showThumbnails,
+          tags = _props3.tags,
+          width = _props3.width;
+      var imageLoaded = this.state.imageLoaded;
 
 
-			if (!images || !images.length) return null;
+      if (!isOpen) return React.createElement("span", { key: "closed" });
 
-			return React.createElement(Footer, {
-				caption: images[currentImage].caption,
-				countCurrent: currentImage + 1,
-				countSeparator: imageCountSeparator,
-				countTotal: images.length,
-				showCount: showImageCount
-			});
-		}
-	}, {
-		key: 'renderSpinner',
-		value: function renderSpinner() {
-			var _props7 = this.props,
-			    spinner = _props7.spinner,
-			    spinnerColor = _props7.spinnerColor,
-			    spinnerSize = _props7.spinnerSize;
-			var imageLoaded = this.state.imageLoaded;
+      return React.createElement(
+        Container,
+        {
+          key: "open",
+          onClick: backdropClosesModal && this.closeBackdrop,
+          onTouchEnd: backdropClosesModal && this.closeBackdrop
+        },
+        React.createElement(
+          "div",
+          null,
+          React.createElement(
+            "div",
+            {
+              className: css(this.classes.content),
+              style: {
+                // marginBottom: offsetThumbnails,
+                maxWidth: width
+              }
+            },
+            imageLoaded && this.renderHeader(),
+            this.renderImages(),
+            this.renderSpinner(),
+            imageLoaded && this.renderFooter()
+          ),
+          imageLoaded && this.renderThumbnails(),
+          imageLoaded && this.renderTags(),
+          imageLoaded && this.renderArrowPrev(),
+          imageLoaded && this.renderArrowNext(),
+          this.props.preventScroll && React.createElement(ScrollLock, null)
+        ),
+        imageLoaded && this.renderCurrentImageTagSection()
+      );
+    }
+  }, {
+    key: "renderImages",
+    value: function renderImages() {
+      var _props4 = this.props,
+          currentImage = _props4.currentImage,
+          images = _props4.images,
+          onClickImage = _props4.onClickImage,
+          showThumbnails = _props4.showThumbnails;
+      var imageLoaded = this.state.imageLoaded;
 
-			var Spinner$$1 = spinner;
 
-			return React.createElement(
-				'div',
-				{ className: css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive) },
-				React.createElement(Spinner$$1, {
-					color: spinnerColor,
-					size: spinnerSize
-				})
-			);
-		}
-	}, {
-		key: 'render',
-		value: function render$$1() {
-			return React.createElement(
-				Portal,
-				null,
-				this.renderDialog()
-			);
-		}
-	}]);
-	return Lightbox;
+      if (!images || !images.length) return null;
+
+      var image = images[currentImage];
+      if (!image) return;
+      var sourceSet = normalizeSourceSet(image);
+      var sizes = sourceSet ? "100vw" : null;
+
+      var thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
+      var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical + 100 + "px";
+
+      return React.createElement(
+        "figure",
+        { className: css(this.classes.figure) },
+        React.createElement("img", {
+          className: css(this.classes.image, imageLoaded && this.classes.imageLoaded),
+          onClick: onClickImage,
+          sizes: sizes,
+          alt: image.alt,
+          src: image.src,
+          srcSet: sourceSet,
+          style: {
+            cursor: onClickImage ? "pointer" : "auto",
+            maxHeight: "calc(100vh - " + heightOffset + ")"
+          }
+        })
+      );
+    }
+  }, {
+    key: "renderThumbnails",
+    value: function renderThumbnails() {
+      var _props5 = this.props,
+          images = _props5.images,
+          currentImage = _props5.currentImage,
+          onClickThumbnail = _props5.onClickThumbnail,
+          showThumbnails = _props5.showThumbnails,
+          thumbnailOffset = _props5.thumbnailOffset,
+          toggleEditTags = _props5.toggleEditTags,
+          editingTags = _props5.editingTags;
+
+
+      return React.createElement(PaginatedThumbnails, {
+        currentImage: currentImage,
+        editingTags: editingTags,
+        images: images,
+        offset: thumbnailOffset,
+        onClickThumbnail: onClickThumbnail,
+        toggleEditTags: toggleEditTags
+      });
+    }
+  }, {
+    key: "renderTags",
+    value: function renderTags() {
+      var _props6 = this.props,
+          handleTagClick = _props6.handleTagClick,
+          editingTags = _props6.editingTags,
+          tags = _props6.tags,
+          selectedTags = _props6.selectedTags,
+          showThumbnails = _props6.showThumbnails,
+          toggleEditTags = _props6.toggleEditTags;
+
+      if (showThumbnails) return;
+      return React.createElement(Tags, {
+        toggleEditTags: toggleEditTags,
+        handleTagClick: handleTagClick,
+        editingTags: editingTags,
+        tags: tags,
+        selectedTags: selectedTags
+      });
+    }
+  }, {
+    key: "renderHeader",
+    value: function renderHeader() {
+      var _props7 = this.props,
+          closeButtonTitle = _props7.closeButtonTitle,
+          customControls = _props7.customControls,
+          onClose = _props7.onClose,
+          showCloseButton = _props7.showCloseButton;
+
+
+      return React.createElement(Header, {
+        customControls: customControls,
+        onClose: onClose,
+        showCloseButton: showCloseButton,
+        closeButtonTitle: closeButtonTitle
+      });
+    }
+  }, {
+    key: "renderFooter",
+    value: function renderFooter() {
+      var _props8 = this.props,
+          currentImage = _props8.currentImage,
+          images = _props8.images,
+          imageCountSeparator = _props8.imageCountSeparator,
+          showImageCount = _props8.showImageCount;
+
+
+      if (!images || !images.length) return null;
+
+      return React.createElement(Footer, {
+        caption: images[currentImage].caption,
+        countCurrent: currentImage + 1,
+        countSeparator: imageCountSeparator,
+        countTotal: images.length,
+        showCount: showImageCount
+      });
+    }
+  }, {
+    key: "renderSpinner",
+    value: function renderSpinner() {
+      var _props9 = this.props,
+          spinner = _props9.spinner,
+          spinnerColor = _props9.spinnerColor,
+          spinnerSize = _props9.spinnerSize;
+      var imageLoaded = this.state.imageLoaded;
+
+      var Spinner$$1 = spinner;
+
+      return React.createElement(
+        "div",
+        {
+          className: css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive)
+        },
+        React.createElement(Spinner$$1, { color: spinnerColor, size: spinnerSize })
+      );
+    }
+  }, {
+    key: "render",
+    value: function render$$1() {
+      return React.createElement(
+        Portal,
+        null,
+        this.renderDialog()
+      );
+    }
+  }]);
+  return Lightbox;
 }(Component);
 
 Lightbox.propTypes = {
-	backdropClosesModal: PropTypes.bool,
-	closeButtonTitle: PropTypes.string,
-	currentImage: PropTypes.number,
-	customControls: PropTypes.arrayOf(PropTypes.node),
-	enableKeyboardInput: PropTypes.bool,
-	imageCountSeparator: PropTypes.string,
-	images: PropTypes.arrayOf(PropTypes.shape({
-		src: PropTypes.string.isRequired,
-		srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-		caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-		thumbnail: PropTypes.string
-	})).isRequired,
-	isOpen: PropTypes.bool,
-	leftArrowTitle: PropTypes.string,
-	onClickImage: PropTypes.func,
-	onClickNext: PropTypes.func,
-	onClickPrev: PropTypes.func,
-	onClose: PropTypes.func.isRequired,
-	preloadNextImage: PropTypes.bool,
-	preventScroll: PropTypes.bool,
-	rightArrowTitle: PropTypes.string,
-	showCloseButton: PropTypes.bool,
-	showImageCount: PropTypes.bool,
-	showThumbnails: PropTypes.bool,
-	spinner: PropTypes.func,
-	spinnerColor: PropTypes.string,
-	spinnerSize: PropTypes.number,
-	theme: PropTypes.object,
-	thumbnailOffset: PropTypes.number,
-	width: PropTypes.number
+  backdropClosesModal: PropTypes.bool,
+  closeButtonTitle: PropTypes.string,
+  currentImage: PropTypes.number,
+  customControls: PropTypes.arrayOf(PropTypes.node),
+  enableKeyboardInput: PropTypes.bool,
+  imageCountSeparator: PropTypes.string,
+  images: PropTypes.arrayOf(PropTypes.shape({
+    src: PropTypes.string.isRequired,
+    srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+    caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    thumbnail: PropTypes.string
+  })).isRequired,
+  isOpen: PropTypes.bool,
+  leftArrowTitle: PropTypes.string,
+  onClickImage: PropTypes.func,
+  onClickNext: PropTypes.func,
+  onClickPrev: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
+  preloadNextImage: PropTypes.bool,
+  preventScroll: PropTypes.bool,
+  rightArrowTitle: PropTypes.string,
+  showCloseButton: PropTypes.bool,
+  showImageCount: PropTypes.bool,
+  showTags: PropTypes.bool,
+  showThumbnails: PropTypes.bool,
+  spinner: PropTypes.func,
+  spinnerColor: PropTypes.string,
+  spinnerSize: PropTypes.number,
+  theme: PropTypes.object,
+  thumbnailOffset: PropTypes.number,
+  width: PropTypes.number,
+  // tags
+  handleTagClick: PropTypes.func,
+  toggleEditTags: PropTypes.func,
+  tags: PropTypes.array,
+  selectedTags: PropTypes.array,
+  currentImageTags: PropTypes.array,
+  editingTags: PropTypes.bool
 };
+
 Lightbox.defaultProps = {
-	closeButtonTitle: 'Close (Esc)',
-	currentImage: 0,
-	enableKeyboardInput: true,
-	imageCountSeparator: ' of ',
-	leftArrowTitle: 'Previous (Left arrow key)',
-	onClickShowNextImage: true,
-	preloadNextImage: true,
-	preventScroll: true,
-	rightArrowTitle: 'Next (Right arrow key)',
-	showCloseButton: true,
-	showImageCount: true,
-	spinner: Spinner,
-	spinnerColor: 'white',
-	spinnerSize: 100,
-	theme: {},
-	thumbnailOffset: 2,
-	width: 1024
+  closeButtonTitle: "Close (Esc)",
+  currentImage: 0,
+  enableKeyboardInput: true,
+  imageCountSeparator: " of ",
+  leftArrowTitle: "Previous (Left arrow key)",
+  onClickShowNextImage: true,
+  preloadNextImage: true,
+  preventScroll: true,
+  rightArrowTitle: "Next (Right arrow key)",
+  showCloseButton: true,
+  showImageCount: true,
+  spinner: Spinner,
+  spinnerColor: "white",
+  spinnerSize: 100,
+  theme: {},
+  tags: [],
+  selectedTags: [],
+  currentImageTags: [],
+  thumbnailOffset: 2,
+  width: 1024
 };
+
 Lightbox.childContextTypes = {
-	theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired
 };
 
 var defaultStyles = {
-	content: {
-		position: 'relative'
-	},
-	figure: {
-		margin: 0 // remove browser default
-	},
-	image: {
-		display: 'block', // removes browser default gutter
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
+  content: {
+    position: "relative"
+  },
+  figure: {
+    margin: 0 // remove browser default
+  },
+  image: {
+    display: "block", // removes browser default gutter
+    height: "auto",
+    margin: "0 auto", // maintain center on very short screens OR very narrow image
+    maxWidth: "100%",
 
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none',
+    // disable user select
+    WebkitTouchCallout: "none",
+    userSelect: "none",
 
-		// opacity animation on image load
-		opacity: 0,
-		transition: 'opacity 0.3s'
-	},
-	imageLoaded: {
-		opacity: 1
-	},
-	spinner: {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
+    // opacity animation on image load
+    opacity: 0,
+    transition: "opacity 0.3s"
+  },
+  imageLoaded: {
+    opacity: 1
+  },
+  spinner: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
 
-		// opacity animation to make spinner appear with delay
-		opacity: 0,
-		transition: 'opacity 0.3s',
-		pointerEvents: 'none'
-	},
-	spinnerActive: {
-		opacity: 1
-	}
+    // opacity animation to make spinner appear with delay
+    opacity: 0,
+    transition: "opacity 0.3s",
+    pointerEvents: "none"
+  },
+  spinnerActive: {
+    opacity: 1
+  }
 };
 
 export default Lightbox;
