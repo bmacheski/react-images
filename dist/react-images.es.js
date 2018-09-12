@@ -1564,7 +1564,7 @@ var Lightbox = function (_Component) {
       if (!images || !images.length) return null;
 
       return React.createElement(Footer, {
-        caption: images[currentImage].caption,
+        caption: images[currentImage] && images[currentImage].caption ? images[currentImage].caption : "",
         countCurrent: currentImage + 1,
         countSeparator: imageCountSeparator,
         countTotal: images.length,

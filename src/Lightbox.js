@@ -423,7 +423,11 @@ class Lightbox extends Component {
 
     return (
       <Footer
-        caption={images[currentImage].caption}
+        caption={
+          images[currentImage] && images[currentImage].caption
+            ? images[currentImage].caption
+            : ""
+        }
         countCurrent={currentImage + 1}
         countSeparator={imageCountSeparator}
         countTotal={images.length}
