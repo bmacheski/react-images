@@ -238,10 +238,8 @@ class Lightbox extends Component {
   renderCurrentImageTagSection() {
     const { currentImageTags, showThumbnails, tags } = this.props;
     return (
-      <div style={{ position: "absolute", right: "250px", top: "150px" }}>
-        <div>
-          <span>Tags: </span>
-        </div>
+      <div className="current-image-tag-section">
+        <span>Tags: </span>
         {currentImageTags.map(x => {
           return (
             <React.Fragment>
@@ -283,12 +281,13 @@ class Lightbox extends Component {
           <div
             className={css(this.classes.content)}
             style={{
-              // marginBottom: offsetThumbnails,
+              marginBottom: offsetThumbnails,
               maxWidth: width
             }}
           >
             {imageLoaded && this.renderHeader()}
             {this.renderImages()}
+            {imageLoaded && this.renderCurrentImageTagSection()}
             {this.renderSpinner()}
             {imageLoaded && this.renderFooter()}
           </div>
@@ -299,7 +298,6 @@ class Lightbox extends Component {
           {imageLoaded && this.renderArrowNext()}
           {this.props.preventScroll && <ScrollLock />}
         </div>
-        {imageLoaded && this.renderCurrentImageTagSection()}
       </Container>
     );
   }

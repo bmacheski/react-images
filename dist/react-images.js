@@ -469,7 +469,7 @@ function Footer(_ref, _ref2) {
 
 	return React__default.createElement(
 		'div',
-		_extends({ className: noImportant.css(classes.footer) }, props),
+		_extends({ className: noImportant.css(classes.footer) + ' lightbox-footer' }, props),
 		caption ? React__default.createElement(
 			'figcaption',
 			{ className: noImportant.css(classes.footerCaption) },
@@ -801,7 +801,7 @@ var PaginatedThumbnails = function (_Component) {
         { className: noImportant.css(classes.paginatedThumbnails) },
         React__default.createElement(
           "div",
-          { style: { color: "white", float: "left" }, onClick: toggleEditTags },
+          { className: "explore-tags", onClick: toggleEditTags },
           React__default.createElement(
             "span",
             { style: { cursor: "pointer" } },
@@ -1097,7 +1097,7 @@ var Tags = function (_Component) {
           null,
           React__default.createElement(
             "div",
-            { style: { color: "white", float: "left" } },
+            { className: "dismiss-section" },
             React__default.createElement(
               "span",
               { onClick: toggleEditTags, style: { cursor: "pointer" } },
@@ -1368,15 +1368,11 @@ var Lightbox = function (_Component) {
 
       return React__default.createElement(
         "div",
-        { style: { position: "absolute", right: "250px", top: "150px" } },
+        { className: "current-image-tag-section" },
         React__default.createElement(
-          "div",
+          "span",
           null,
-          React__default.createElement(
-            "span",
-            null,
-            "Tags: "
-          )
+          "Tags: "
         ),
         currentImageTags.map(function (x) {
           return React__default.createElement(
@@ -1402,6 +1398,11 @@ var Lightbox = function (_Component) {
 
       if (!isOpen) return React__default.createElement("span", { key: "closed" });
 
+      var offsetThumbnails = 0;
+      if (showThumbnails) {
+        offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
+      }
+
       return React__default.createElement(
         Container,
         {
@@ -1417,12 +1418,13 @@ var Lightbox = function (_Component) {
             {
               className: aphrodite.css(this.classes.content),
               style: {
-                // marginBottom: offsetThumbnails,
+                marginBottom: offsetThumbnails,
                 maxWidth: width
               }
             },
             imageLoaded && this.renderHeader(),
             this.renderImages(),
+            imageLoaded && this.renderCurrentImageTagSection(),
             this.renderSpinner(),
             imageLoaded && this.renderFooter()
           ),
@@ -1431,8 +1433,7 @@ var Lightbox = function (_Component) {
           imageLoaded && this.renderArrowPrev(),
           imageLoaded && this.renderArrowNext(),
           this.props.preventScroll && React__default.createElement(ScrollLock, null)
-        ),
-        imageLoaded && this.renderCurrentImageTagSection()
+        )
       );
     }
   }, {

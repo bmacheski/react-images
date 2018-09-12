@@ -23,7 +23,7 @@ export default class Tags extends Component {
       >
         {editingTags && (
           <React.Fragment>
-            <div style={{ color: "white", float: "left" }}>
+            <div className="dismiss-section">
               <span onClick={toggleEditTags} style={{ cursor: "pointer" }}>
                 Dismiss <i className="fas fa-times" />
               </span>

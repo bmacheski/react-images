@@ -150,7 +150,7 @@ export default class PaginatedThumbnails extends Component {
 
     return (
       <div className={css(classes.paginatedThumbnails)}>
-        <div style={{ color: "white", float: "left" }} onClick={toggleEditTags}>
+        <div className="explore-tags" onClick={toggleEditTags}>
           <span style={{ cursor: "pointer" }}>
             Explore Tags <i className="fas fa-caret-right" />
           </span>

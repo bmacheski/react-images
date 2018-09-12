@@ -27,7 +27,7 @@ function Footer ({
 		: <span />;
 
 	return (
-		<div className={css(classes.footer)} {...props}>
+		<div className={`${css(classes.footer)} lightbox-footer`} {...props}>
 			{caption ? (
 				<figcaption className={css(classes.footerCaption)}>
 					{caption}

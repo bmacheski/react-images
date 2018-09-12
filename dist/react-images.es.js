@@ -467,7 +467,7 @@ function Footer(_ref, _ref2) {
 
 	return React.createElement(
 		'div',
-		_extends({ className: css$1(classes.footer) }, props),
+		_extends({ className: css$1(classes.footer) + ' lightbox-footer' }, props),
 		caption ? React.createElement(
 			'figcaption',
 			{ className: css$1(classes.footerCaption) },
@@ -799,7 +799,7 @@ var PaginatedThumbnails = function (_Component) {
         { className: css$1(classes.paginatedThumbnails) },
         React.createElement(
           "div",
-          { style: { color: "white", float: "left" }, onClick: toggleEditTags },
+          { className: "explore-tags", onClick: toggleEditTags },
           React.createElement(
             "span",
             { style: { cursor: "pointer" } },
@@ -1095,7 +1095,7 @@ var Tags = function (_Component) {
           null,
           React.createElement(
             "div",
-            { style: { color: "white", float: "left" } },
+            { className: "dismiss-section" },
             React.createElement(
               "span",
               { onClick: toggleEditTags, style: { cursor: "pointer" } },
@@ -1366,15 +1366,11 @@ var Lightbox = function (_Component) {
 
       return React.createElement(
         "div",
-        { style: { position: "absolute", right: "250px", top: "150px" } },
+        { className: "current-image-tag-section" },
         React.createElement(
-          "div",
+          "span",
           null,
-          React.createElement(
-            "span",
-            null,
-            "Tags: "
-          )
+          "Tags: "
         ),
         currentImageTags.map(function (x) {
           return React.createElement(
@@ -1400,6 +1396,11 @@ var Lightbox = function (_Component) {
 
       if (!isOpen) return React.createElement("span", { key: "closed" });
 
+      var offsetThumbnails = 0;
+      if (showThumbnails) {
+        offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
+      }
+
       return React.createElement(
         Container,
         {
@@ -1415,12 +1416,13 @@ var Lightbox = function (_Component) {
             {
               className: css(this.classes.content),
               style: {
-                // marginBottom: offsetThumbnails,
+                marginBottom: offsetThumbnails,
                 maxWidth: width
               }
             },
             imageLoaded && this.renderHeader(),
             this.renderImages(),
+            imageLoaded && this.renderCurrentImageTagSection(),
             this.renderSpinner(),
             imageLoaded && this.renderFooter()
           ),
@@ -1429,8 +1431,7 @@ var Lightbox = function (_Component) {
           imageLoaded && this.renderArrowPrev(),
           imageLoaded && this.renderArrowNext(),
           this.props.preventScroll && React.createElement(ScrollLock, null)
-        ),
-        imageLoaded && this.renderCurrentImageTagSection()
+        )
       );
     }
   }, {
