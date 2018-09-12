@@ -780,8 +780,7 @@ var PaginatedThumbnails = function (_Component) {
           currentImage = _props4.currentImage,
           onClickThumbnail = _props4.onClickThumbnail,
           offset = _props4.offset,
-          toggleEditTags = _props4.toggleEditTags,
-          editingTags = _props4.editingTags;
+          toggleEditTags = _props4.toggleEditTags;
 
 
       var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
@@ -801,32 +800,24 @@ var PaginatedThumbnails = function (_Component) {
         React.createElement(
           "div",
           { style: { color: "white", float: "left" }, onClick: toggleEditTags },
-          !editingTags && React.createElement(
-            React.Fragment,
-            null,
-            React.createElement(
-              "span",
-              { style: { cursor: "pointer" } },
-              "Explore Tags ",
-              React.createElement("i", { className: "fas fa-caret-right" })
-            )
+          React.createElement(
+            "span",
+            { style: { cursor: "pointer" } },
+            "Explore Tags ",
+            React.createElement("i", { className: "fas fa-caret-right" })
           )
         ),
-        !editingTags && React.createElement(
-          React.Fragment,
-          null,
-          this.renderArrowPrev(),
-          thumbnails.map(function (img, idx) {
-            return React.createElement(Thumbnail, _extends({
-              key: baseOffset + idx
-            }, img, {
-              index: baseOffset + idx,
-              onClick: onClickThumbnail,
-              active: baseOffset + idx === currentImage
-            }));
-          }),
-          this.renderArrowNext()
-        )
+        this.renderArrowPrev(),
+        thumbnails.map(function (img, idx) {
+          return React.createElement(Thumbnail, _extends({
+            key: baseOffset + idx
+          }, img, {
+            index: baseOffset + idx,
+            onClick: onClickThumbnail,
+            active: baseOffset + idx === currentImage
+          }));
+        }),
+        this.renderArrowNext()
       );
     }
   }]);
@@ -1104,19 +1095,7 @@ var Tags = function (_Component) {
           null,
           React.createElement(
             "div",
-            {
-              style: {
-                // margin: "0"
-                // top: "50%",
-                // transform: "translateY(-50)",
-                // position: "absolute",
-                // left: "-75px",
-                // height: "100%",
-                // paddingRight: "4px",
-                // color: "white",
-                // marginRight: "10px"
-              }
-            },
+            { style: { color: "white", float: "left" } },
             React.createElement(
               "span",
               { onClick: toggleEditTags, style: { cursor: "pointer" } },
@@ -1149,7 +1128,7 @@ var classes$1 = StyleSheet$1.create({
     left: "50%",
     transform: "translateX(-50%)"
   },
-  editingThumbnails: {
+  editingTags: {
     bottom: theme.container.gutter.vertical,
     height: theme.thumbnail.size,
     padding: "0 20px",
@@ -1504,7 +1483,7 @@ var Lightbox = function (_Component) {
           toggleEditTags = _props5.toggleEditTags,
           editingTags = _props5.editingTags;
 
-
+      if (editingTags) return;
       return React.createElement(PaginatedThumbnails, {
         currentImage: currentImage,
         editingTags: editingTags,

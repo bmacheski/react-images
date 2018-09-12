@@ -23,25 +23,7 @@ export default class Tags extends Component {
       >
         {editingTags && (
           <React.Fragment>
-            <div
-              style={
-                {
-                  // margin: "0"
-                  // top: "50%",
-                  // transform: "translateY(-50)",
-                  // position: "absolute",
-                  // left: "-75px",
-                  // height: "100%",
-                  // paddingRight: "4px",
-                  // color: "white",
-                  // marginRight: "10px"
-                }
-              }
-            >
-              {/* <span onClick={toggleEditTags} style={{ cursor: "pointer" }}>
-                Apply <i className="fas fa-check" />
-              </span>
-              <br /> */}
+            <div style={{ color: "white", float: "left" }}>
               <span onClick={toggleEditTags} style={{ cursor: "pointer" }}>
                 Dismiss <i className="fas fa-times" />
               </span>
@@ -74,7 +56,7 @@ const classes = StyleSheet.create({
     left: "50%",
     transform: "translateX(-50%)"
   },
-  editingThumbnails: {
+  editingTags: {
     bottom: theme.container.gutter.vertical,
     height: theme.thumbnail.size,
     padding: "0 20px",

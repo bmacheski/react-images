@@ -359,7 +359,7 @@ class Lightbox extends Component {
       toggleEditTags,
       editingTags
     } = this.props;
-
+    if (editingTags) return;
     return (
       <PaginatedThumbnails
         currentImage={currentImage}

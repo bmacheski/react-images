@@ -151,29 +151,21 @@ export default class PaginatedThumbnails extends Component {
     return (
       <div className={css(classes.paginatedThumbnails)}>
         <div style={{ color: "white", float: "left" }} onClick={toggleEditTags}>
-          {!editingTags && (
-            <React.Fragment>
-              <span style={{ cursor: "pointer" }}>
-                Explore Tags <i className="fas fa-caret-right" />
-              </span>
-            </React.Fragment>
-          )}
+          <span style={{ cursor: "pointer" }}>
+            Explore Tags <i className="fas fa-caret-right" />
+          </span>
         </div>
-        {!editingTags && (
-          <React.Fragment>
-            {this.renderArrowPrev()}
-            {thumbnails.map((img, idx) => (
-              <Thumbnail
-                key={baseOffset + idx}
-                {...img}
-                index={baseOffset + idx}
-                onClick={onClickThumbnail}
-                active={baseOffset + idx === currentImage}
-              />
-            ))}
-            {this.renderArrowNext()}
-          </React.Fragment>
-        )}
+        {this.renderArrowPrev()}
+        {thumbnails.map((img, idx) => (
+          <Thumbnail
+            key={baseOffset + idx}
+            {...img}
+            index={baseOffset + idx}
+            onClick={onClickThumbnail}
+            active={baseOffset + idx === currentImage}
+          />
+        ))}
+        {this.renderArrowNext()}
       </div>
     );
   }
