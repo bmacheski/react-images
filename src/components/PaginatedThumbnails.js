@@ -150,11 +150,14 @@ export default class PaginatedThumbnails extends Component {
 
     return (
       <div className={css(classes.paginatedThumbnails)}>
-        <div className="explore-tags" onClick={toggleEditTags}>
-          <span style={{ cursor: "pointer" }}>
-            Explore Tags <i className="fas fa-caret-right" />
-          </span>
-        </div>
+        <span
+          className="explore-tags"
+          style={{ cursor: "pointer" }}
+          onClick={toggleEditTags}
+        >
+          Explore Tags <i className="fas fa-caret-right" />
+        </span>
+
         {this.renderArrowPrev()}
         {thumbnails.map((img, idx) => (
           <Thumbnail

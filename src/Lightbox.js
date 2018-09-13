@@ -265,7 +265,7 @@ class Lightbox extends Component {
 
     if (!isOpen) return <span key="closed" />;
 
-    let offsetThumbnails = 0;
+    let offsetThumbnails = 60;
     if (showThumbnails) {
       offsetThumbnails =
         this.theme.thumbnail.size + this.theme.container.gutter.vertical;
@@ -318,8 +318,7 @@ class Lightbox extends Component {
     const heightOffset = `${this.theme.header.height +
       this.theme.footer.height +
       thumbnailsSize +
-      this.theme.container.gutter.vertical +
-      100}px`;
+      this.theme.container.gutter.vertical}px`;
 
     return (
       <figure className={css(this.classes.figure)}>

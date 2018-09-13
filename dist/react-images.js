@@ -800,14 +800,14 @@ var PaginatedThumbnails = function (_Component) {
         "div",
         { className: noImportant.css(classes.paginatedThumbnails) },
         React__default.createElement(
-          "div",
-          { className: "explore-tags", onClick: toggleEditTags },
-          React__default.createElement(
-            "span",
-            { style: { cursor: "pointer" } },
-            "Explore Tags ",
-            React__default.createElement("i", { className: "fas fa-caret-right" })
-          )
+          "span",
+          {
+            className: "explore-tags",
+            style: { cursor: "pointer" },
+            onClick: toggleEditTags
+          },
+          "Explore Tags ",
+          React__default.createElement("i", { className: "fas fa-caret-right" })
         ),
         this.renderArrowPrev(),
         thumbnails.map(function (img, idx) {
@@ -1133,7 +1133,7 @@ var classes$1 = noImportant.StyleSheet.create({
   editingTags: {
     bottom: theme.container.gutter.vertical,
     height: theme.thumbnail.size,
-    padding: "0 20px",
+    padding: "12px",
     position: "absolute",
     textAlign: "center",
     whiteSpace: "nowrap",
@@ -1398,7 +1398,7 @@ var Lightbox = function (_Component) {
 
       if (!isOpen) return React__default.createElement("span", { key: "closed" });
 
-      var offsetThumbnails = 0;
+      var offsetThumbnails = 60;
       if (showThumbnails) {
         offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
       }
@@ -1455,7 +1455,7 @@ var Lightbox = function (_Component) {
       var sizes = sourceSet ? "100vw" : null;
 
       var thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-      var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical + 100 + "px";
+      var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical + "px";
 
       return React__default.createElement(
         "figure",

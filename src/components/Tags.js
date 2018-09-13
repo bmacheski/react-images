@@ -59,7 +59,7 @@ const classes = StyleSheet.create({
   editingTags: {
     bottom: theme.container.gutter.vertical,
     height: theme.thumbnail.size,
-    padding: "0 20px",
+    padding: "12px",
     position: "absolute",
     textAlign: "center",
     whiteSpace: "nowrap",

@@ -798,14 +798,14 @@ var PaginatedThumbnails = function (_Component) {
         "div",
         { className: css$1(classes.paginatedThumbnails) },
         React.createElement(
-          "div",
-          { className: "explore-tags", onClick: toggleEditTags },
-          React.createElement(
-            "span",
-            { style: { cursor: "pointer" } },
-            "Explore Tags ",
-            React.createElement("i", { className: "fas fa-caret-right" })
-          )
+          "span",
+          {
+            className: "explore-tags",
+            style: { cursor: "pointer" },
+            onClick: toggleEditTags
+          },
+          "Explore Tags ",
+          React.createElement("i", { className: "fas fa-caret-right" })
         ),
         this.renderArrowPrev(),
         thumbnails.map(function (img, idx) {
@@ -1131,7 +1131,7 @@ var classes$1 = StyleSheet$1.create({
   editingTags: {
     bottom: theme.container.gutter.vertical,
     height: theme.thumbnail.size,
-    padding: "0 20px",
+    padding: "12px",
     position: "absolute",
     textAlign: "center",
     whiteSpace: "nowrap",
@@ -1396,7 +1396,7 @@ var Lightbox = function (_Component) {
 
       if (!isOpen) return React.createElement("span", { key: "closed" });
 
-      var offsetThumbnails = 0;
+      var offsetThumbnails = 60;
       if (showThumbnails) {
         offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
       }
@@ -1453,7 +1453,7 @@ var Lightbox = function (_Component) {
       var sizes = sourceSet ? "100vw" : null;
 
       var thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-      var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical + 100 + "px";
+      var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical + "px";
 
       return React.createElement(
         "figure",
